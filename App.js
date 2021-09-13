@@ -18,19 +18,43 @@ function Home({ navigation }) {
   const submitForm = () => {
     // const token = "1|0k8DoLYUZQhxyHQQO4reaWRIlSz6JU9kIeNVhdji";
     console.log(text);
-    axios
+    var myHeaders = new Headers();
+myHeaders.append("Accept", "application/json");
+myHeaders.append("Authorization", "Bearer 1|i90cGR93VtPeLDqBcTJVpaqb40cCZdxhROjRllrJ");
+
+
+
+var requestOptions = {
+  method: 'GET',
+  headers: myHeaders,
+  redirect: 'follow'
+};
+
+fetch("http://ir-connectserver.com/api/v1/analysis/?code_interne=ID_IRESSEF-053846", requestOptions)
+  .then(response => response.json())
+  .then(result => {
+    console.log(result);
+    const displayName = `${result.data[0].prenom} ${result.data[0].nom}`;
+    console.log(displayName);
+    navigation.navigate("Resultats", {
+      displayName,
+      code: result.data[0].identification,
+      sexe: result.data[0].sexe,
+      naissance: result.data[0].naissance,
+      datePrelev: result.data[0].date_prelev,
+      resultat: result.data[0].resultat,
+      passport: result.data[0].code_interne,
+    });
+  })
+  .catch(error => console.log('error', error));
+    /* axios
       .get(
         `http://www.ir-connectserver.com/api/v1/analysis?identification=SN-IR1-0015988`,
         {
-          headers: new Headers({
+          headers: {
             Authorization: "Bearer 2|2Cr6zHTp40Rkm3thGqgSdobjvMRBWN1GJe43Iwlw",
-            "Content-Type": "application/json",
-            Connection: "keep-alive",
             Accept: "application/json",
-            "Accept-Encoding": "gzip,deflate,br",
-            "Cache-Control": "no-cache",
-            Host: "http://www.ir-connectserver.com/api/v1/analysis",
-          }),
+          }
         }
       )
       // .then((response) => response.json())
@@ -49,7 +73,7 @@ function Home({ navigation }) {
           passport: "ACOOOOSOO",
         });
       })
-      .catch((error) => console.log(error.message));
+      .catch((error) => console.log(error.message)); */
     // navigation.navigate("erreur");
     setText("");
   };
