@@ -13,24 +13,31 @@ import Erreur from "./Erreur";
 import Resultats from "./Resultats";
 import axios from "axios";
 
-import { AppRegistry } from "react-native";
-AppRegistry.registerHeadlessTask("SomeTaskName", () => require("SomeTaskName"));
-
 function Home({ navigation }) {
   const [text, setText] = useState("");
   const submitForm = () => {
     // const token = "1|0k8DoLYUZQhxyHQQO4reaWRIlSz6JU9kIeNVhdji";
     console.log(text);
     axios
-      .get(`http://a58095365ada.ngrok.io/api/v1/analysis`, {
-        headers: {
-          Authorization: `Bearer 2|JL1KT4rsZYCzas7AzpZgOtGRrzU3trOikNfqn6lB`,
-        },
-      })
+      .get(
+        `http://www.ir-connectserver.com/api/v1/analysis?identification=SN-IR1-0015988`,
+        {
+          headers: new Headers({
+            Authorization: "Bearer 2|2Cr6zHTp40Rkm3thGqgSdobjvMRBWN1GJe43Iwlw",
+            "Content-Type": "application/json",
+            Connection: "keep-alive",
+            Accept: "application/json",
+            "Accept-Encoding": "gzip,deflate,br",
+            "Cache-Control": "no-cache",
+            Host: "http://www.ir-connectserver.com/api/v1/analysis",
+          }),
+        }
+      )
+      // .then((response) => response.json())
       .then((response) => {
-        console.log(response);
-        console.log(response.data[0].identification, response.data[0].resultat);
-        const displayName = `${response.data[0].prenom} ${response.data[0].nom}`;
+        console.log(response.data);
+        // console.log(response.data[0].identification, response.data[0].resultat);
+        // const displayName = `${response.data[0].prenom} ${response.data[0].nom}`;
         // displayName, code, sexe, age, resultat
         navigation.navigate("Resultats", {
           displayName: "Jean Charles",
@@ -42,7 +49,7 @@ function Home({ navigation }) {
           passport: "ACOOOOSOO",
         });
       })
-      .catch((error) => navigation.navigate("erreur"));
+      .catch((error) => console.log(error.message));
     // navigation.navigate("erreur");
     setText("");
   };
