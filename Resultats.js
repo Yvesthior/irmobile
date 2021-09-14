@@ -6,6 +6,7 @@ import {
   ScrollView,
   Button,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 
 function Resultats({ route, navigation }) {
@@ -20,19 +21,24 @@ function Resultats({ route, navigation }) {
       <View style={styles.container}>
         <Text style={styles.header}>RÉSULTATS DE LA RECHERCHE</Text>
         <Text style={styles.code}>CODE : {code}</Text>
-        <Text style={styles.prenom}>PRENOMS - NOM : {displayName}</Text>
-        <Text style={styles.prenom}>PASSPORT : {passport}</Text>
+        <Text style={styles.prenom}>PRENOMS - NOM :</Text>
+        <Text style={styles.prenoms}>{displayName}</Text>
         <Text style={styles.age}>Date de Naissance : {naissance}</Text>
 
         <Text style={styles.sexe}>SEXE : {sexe}</Text>
         <Text style={styles.prelev}>Date de Prélèvement : {datePrelev}</Text>
 
         <Text style={styles.resultat}>RÉSULTAT</Text>
-        <Text
-          style={resultat === "Positif" ? styles.resultat2 : styles.resultat3}
-        >
-          {resultat}
-        </Text>
+
+        {resultat === "Négatif" ? (
+          <View style={styles.viewNegatif}>
+            <Text style={styles.resultat2}>{resultat}</Text>
+          </View>
+        ) : (
+          <View style={styles.viewPositif}>
+            <Text style={styles.resultat3}>{resultat}</Text>
+          </View>
+        )}
 
         <TouchableOpacity
           onPress={() => navigation.navigate("acceuil")}
@@ -55,12 +61,41 @@ const styles = StyleSheet.create({
   header: { fontSize: 25, marginTop: 50 },
   code: { marginTop: 40, fontSize: 20, marginBottom: 20 },
   prenom: { marginTop: 20, fontSize: 20, marginBottom: 10 },
+  prenoms: { marginTop: 20, fontSize: 20, marginBottom: 10 },
   age: { marginTop: 20, fontSize: 20, marginBottom: 10 },
   sexe: { marginTop: 20, fontSize: 20, marginBottom: 10 },
   prelev: { marginTop: 10, fontSize: 20, marginBottom: 5 },
-  resultat: { marginTop: 20, fontSize: 20, marginBottom: 20 },
-  resultat2: { marginTop: 10, fontSize: 40, marginBottom: 20 },
+  resultat: {
+    marginTop: 20,
+    fontSize: 20,
+    marginBottom: 20,
+    textAlign: "center",
+  },
   resultat2: {
+    marginTop: 10,
+    fontSize: 40,
+    marginBottom: 20,
+    color: "white",
+  },
+  viewNegatif: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "green",
+    width: Dimensions.get("window").width,
+    marginBottom: 20,
+  },
+  viewPositif: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "red",
+    width: Dimensions.get("window").width,
+    marginBottom: 20,
+  },
+  resultat3: {
     marginTop: 10,
     fontSize: 40,
     marginBottom: 20,

@@ -19,34 +19,41 @@ function Home({ navigation }) {
     // const token = "1|0k8DoLYUZQhxyHQQO4reaWRIlSz6JU9kIeNVhdji";
     console.log(text);
     var myHeaders = new Headers();
-myHeaders.append("Accept", "application/json");
-myHeaders.append("Authorization", "Bearer 1|i90cGR93VtPeLDqBcTJVpaqb40cCZdxhROjRllrJ");
+    myHeaders.append("Accept", "application/json");
+    myHeaders.append(
+      "Authorization",
+      "Bearer 1|i90cGR93VtPeLDqBcTJVpaqb40cCZdxhROjRllrJ"
+    );
 
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
 
-
-var requestOptions = {
-  method: 'GET',
-  headers: myHeaders,
-  redirect: 'follow'
-};
-
-fetch("http://ir-connectserver.com/api/v1/analysis/?code_interne=ID_IRESSEF-053846", requestOptions)
-  .then(response => response.json())
-  .then(result => {
-    console.log(result);
-    const displayName = `${result.data[0].prenom} ${result.data[0].nom}`;
-    console.log(displayName);
-    navigation.navigate("Resultats", {
-      displayName,
-      code: result.data[0].identification,
-      sexe: result.data[0].sexe,
-      naissance: result.data[0].naissance,
-      datePrelev: result.data[0].date_prelev,
-      resultat: result.data[0].resultat,
-      passport: result.data[0].code_interne,
-    });
-  })
-  .catch(error => console.log('error', error));
+    fetch(
+      `https://ir-connectserver.com/api/v1/analysis/?identification=${text}`,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        console.log(result);
+        const displayName = `${result.data[0].prenom} ${result.data[0].nom}`;
+        console.log(displayName);
+        navigation.navigate("Resultats", {
+          displayName,
+          code: result.data[0].identification,
+          sexe: result.data[0].sexe,
+          naissance: result.data[0].naissance,
+          datePrelev: result.data[0].date_prelev,
+          resultat: result.data[0].resultat,
+          passport: result.data[0].code_interne,
+        });
+      })
+      .catch((error) => {
+        console.log("error", error);
+        navigation.navigate("erreur");
+      });
     /* axios
       .get(
         `http://www.ir-connectserver.com/api/v1/analysis?identification=SN-IR1-0015988`,
